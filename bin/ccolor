@@ -1,0 +1,163 @@
+#!/usr/bin/env bash
+
+declare -a blacks=()
+declare -a reds=()
+declare -a greens=()
+declare -a yellows=()
+declare -a blues=()
+declare -a purples=()
+declare -a cyans=()
+declare -a whites=()
+
+mode="light"   # default: 90-97
+
+process_arg() {
+  if [[ "$1" =~ ^/(.+)/$ ]]; then
+    printf '%s' "R${BASH_REMATCH[1]}"
+  else
+    printf '%s' "L$1"
+  fi
+}
+
+cur=""
+auto_idx=0
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -d) mode="dark" ;;
+    -l) mode="light" ;;
+    -k) cur=blacks ;;
+    -r) cur=reds ;;
+    -g) cur=greens ;;
+    -y) cur=yellows ;;
+    -b) cur=blues ;;
+    -p) cur=purples ;;
+    -c) cur=cyans ;;
+    -w) cur=whites ;;
+    -*)
+      echo "Usage: [-d|-l] [-k|-r|-g|-y|-b|-p|-c|-w] [words...]"; exit 1 ;;
+    *)
+      arg="$(process_arg "$1")"
+      if [[ -n "$cur" ]]; then
+        case "$cur" in
+          blacks)  blacks+=("$arg") ;;
+          reds)    reds+=("$arg") ;;
+          greens)  greens+=("$arg") ;;
+          yellows) yellows+=("$arg") ;;
+          blues)   blues+=("$arg") ;;
+          purples) purples+=("$arg") ;;
+          cyans)   cyans+=("$arg") ;;
+          whites)  whites+=("$arg") ;;
+        esac
+      else
+        case $((auto_idx % 6)) in
+          0) reds+=("$arg") ;;
+          1) greens+=("$arg") ;;
+          2) yellows+=("$arg") ;;
+          3) blues+=("$arg") ;;
+          4) purples+=("$arg") ;;
+          5) cyans+=("$arg") ;;
+        esac
+        ((auto_idx++))
+      fi
+      ;;
+  esac
+  shift
+done
+
+join() { local IFS=,; echo "$*"; }
+
+black_list=$(join "${blacks[@]}")
+red_list=$(join "${reds[@]}")
+green_list=$(join "${greens[@]}")
+yellow_list=$(join "${yellows[@]}")
+blue_list=$(join "${blues[@]}")
+purple_list=$(join "${purples[@]}")
+cyan_list=$(join "${cyans[@]}")
+white_list=$(join "${whites[@]}")
+
+CC_MODE="$mode" \
+CC_K="$black_list" \
+CC_R="$red_list" \
+CC_G="$green_list" \
+CC_Y="$yellow_list" \
+CC_B="$blue_list" \
+CC_P="$purple_list" \
+CC_C="$cyan_list" \
+CC_W="$white_list" \
+awk '
+BEGIN {
+  if (ENVIRON["CC_MODE"] == "dark") base=30
+  else base=90
+
+  split(ENVIRON["CC_K"], K, ",")
+  split(ENVIRON["CC_R"], R, ",")
+  split(ENVIRON["CC_G"], G, ",")
+  split(ENVIRON["CC_Y"], Y, ",")
+  split(ENVIRON["CC_B"], B, ",")
+  split(ENVIRON["CC_P"], P, ",")
+  split(ENVIRON["CC_C"], C, ",")
+  split(ENVIRON["CC_W"], W, ",")
+
+  COL["K"]="\033[" base "m"
+  COL["R"]="\033[" base+1 "m"
+  COL["G"]="\033[" base+2 "m"
+  COL["Y"]="\033[" base+3 "m"
+  COL["B"]="\033[" base+4 "m"
+  COL["P"]="\033[" base+5 "m"
+  COL["C"]="\033[" base+6 "m"
+  COL["W"]="\033[" base+7 "m"
+
+  RESET="\033[0m"
+}
+function literal_replace(s, lit, rep,    result, pos, len) {
+  len = length(lit)
+  if (len == 0) return s
+  result = ""
+  while ((pos = index(s, lit)) > 0) {
+    result = result substr(s, 1, pos - 1) rep
+    s = substr(s, pos + len)
+  }
+  return result s
+}
+function color_sub(line, pat, is_re, col,    result, pre, esc, rest) {
+  result = ""
+  rest = line
+  while (match(rest, /\033\[[0-9;]*m/)) {
+    pre = substr(rest, 1, RSTART - 1)
+    esc = substr(rest, RSTART, RLENGTH)
+    rest = substr(rest, RSTART + RLENGTH)
+    if (is_re)
+      gsub(pat, col "&" RESET, pre)
+    else
+      pre = literal_replace(pre, pat, col pat RESET)
+    result = result pre esc
+  }
+  if (is_re)
+    gsub(pat, col "&" RESET, rest)
+  else
+    rest = literal_replace(rest, pat, col pat RESET)
+  return result rest
+}
+function apply_color(arr, col,    i, mode, pat) {
+  for (i in arr) {
+    if (arr[i] == "") continue
+    mode = substr(arr[i], 1, 1)
+    pat = substr(arr[i], 2)
+    if (pat == "") continue
+    $0 = color_sub($0, pat, (mode == "R"), col)
+  }
+}
+{
+  apply_color(K, COL["K"])
+  apply_color(R, COL["R"])
+  apply_color(G, COL["G"])
+  apply_color(Y, COL["Y"])
+  apply_color(B, COL["B"])
+  apply_color(P, COL["P"])
+  apply_color(C, COL["C"])
+  apply_color(W, COL["W"])
+
+  print
+}
+'

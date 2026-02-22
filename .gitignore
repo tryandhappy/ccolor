@@ -1,0 +1,16 @@
+packaging/rpmbuild/BUILD
+packaging/rpmbuild/BUILDROOT
+packaging/rpmbuild/RPMS
+packaging/rpmbuild/SOURCES/*
+packaging/rpmbuild/SRPMS
+ccolor_*.deb
+ccolor_*.dsc
+ccolor_*.tar.gz
+ccolor_*.buildinfo
+ccolor_*.changes
+packaging/debian/.debhelper/
+packaging/debian/ccolor/
+packaging/debian/*.substvars
+packaging/debian/debhelper-build-stamp
+packaging/debian/files
+

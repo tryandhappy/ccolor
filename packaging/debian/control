@@ -1,0 +1,12 @@
+Source: ccolor
+Section: utils
+Priority: optional
+Maintainer: tryandhappy
+Standards-Version: 0.1.0
+Build-Depends: debhelper-compat (= 13)
+
+Package: ccolor
+Architecture: all
+Depends: bash, awk
+Description: Command to color text in the Bash prompt.
+
