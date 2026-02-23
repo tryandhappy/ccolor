@@ -50,13 +50,12 @@ while [[ $# -gt 0 ]]; do
           whites)  whites+=("$arg") ;;
         esac
       else
-        case $((auto_idx % 6)) in
+        case $((auto_idx % 5)) in
           0) reds+=("$arg") ;;
           1) greens+=("$arg") ;;
-          2) yellows+=("$arg") ;;
-          3) blues+=("$arg") ;;
-          4) purples+=("$arg") ;;
-          5) cyans+=("$arg") ;;
+          2) blues+=("$arg") ;;
+          3) purples+=("$arg") ;;
+          4) cyans+=("$arg") ;;
         esac
         ((auto_idx++))
       fi

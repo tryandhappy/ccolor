@@ -8,7 +8,7 @@
 ## Sample
 <pre style="background:black; color:white; padding:10px;">
 $ echo "AAA BBB CCC DDD EEE" | ccolor BBB DDD
-AAA <span style="color:#FF0000">BBB</span> CCC <span style="color:$00FF00">DDD</span> EEE
+AAA <span style="color:#FF0000">BBB</span> CCC <span style="color:#00FF00">DDD</span> EEE
 </pre>
 
 

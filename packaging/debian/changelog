@@ -1,6 +1,12 @@
+ccolor (0.1.1-1) unstable; urgency=medium
+
+  * Automatically select colors, excluding yellow.
+
+ -- tryandhappy <tryandhappy@users.noreply.github.com>  Mon, 23 Feb 2026 00:00:00 +0000
+
 ccolor (0.1.0-1) unstable; urgency=medium
 
   * Nightly.
 
- -- tryandhappy <tryandhappy@users.noreply.github.com>  Sun, 23 Feb 2026 00:00:00 +0000
+ -- tryandhappy <tryandhappy@users.noreply.github.com>  Mon, 23 Feb 2026 00:00:00 +0000
 
