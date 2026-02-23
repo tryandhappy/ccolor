@@ -10,19 +10,19 @@
 ```
 $ echo "AAA BBB CCC DDD EEE FFF GGG" | ccolor AAA
 ```
-![sample1](docs/images/sample1)
+![sample1](docs/images/sample1.png)
 
 
 ```
 $ echo "AAA BBB CCC DDD EEE FFF GGG" | ccolor AAA BBB CCC DDD EEE FFF
 ```
-![sample2](docs/images/sample2)
+![sample2](docs/images/sample2.png)
 
 
 ```
 $ echo "AAA BBB CCC DDD EEE FFF GGG" | ccolor AA BB CC DD EE FF
 ```
-![sample3](docs/images/sample3)
+![sample3](docs/images/sample3.png)
 
 
 ## Color Sample
@@ -32,7 +32,7 @@ $ echo "AAA BBB CCC DDD EEE FFF GGG" | ccolor AA BB CC DD EE FF
 $ echo "AAA BBB CCC DDD EEE FFF GGG" | ccolor -l AA BB CC DD EE FF
 $ echo "AAA BBB CCC DDD EEE FFF GGG" | ccolor -d AA BB CC DD EE FF
 ```
-![sample4](docs/images/sample4)
+![sample4](docs/images/sample4.png)
 
 
 ### Colors
@@ -45,14 +45,14 @@ $ echo "AAA BBB CCC DDD EEE FFF GGG" | ccolor -c AA BB CC DD EE FF
 $ echo "AAA BBB CCC DDD EEE FFF GGG" | ccolor -w AA BB CC DD EE FF
 $ echo "AAA BBB CCC DDD EEE FFF GGG" | ccolor -k AA BB CC DD EE FF
 ```
-![sample5](docs/images/sample5)
+![sample5](docs/images/sample5.png)
 
 
 ```
 $ echo "AAA BBB CCC DDD EEE FFF GGG" | ccolor -r AA BB -g CC DD -b EE FF
 $ echo "AAA BBB CCC DDD EEE FFF GGG" | ccolor -r AA -g BB -b CC -p DD -c EE -k FF -w GG
 ```
-![sample6](docs/images/sample6)
+![sample6](docs/images/sample6.png)
 
 
 
@@ -60,7 +60,7 @@ $ echo "AAA BBB CCC DDD EEE FFF GGG" | ccolor -r AA -g BB -b CC -p DD -c EE -k F
 ```
 $ echo "AAA BBB CCC DDD EEE FFF GGG" | ccolor -r /A+/ -g /B+/ -b /C[C]/ -p /DDD?/ -c /EE*/
 ```
-![sample7](docs/images/sample7)
+![sample7](docs/images/sample7.png)
 
 
 
