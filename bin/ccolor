@@ -8,8 +8,17 @@ declare -a blues=()
 declare -a purples=()
 declare -a cyans=()
 declare -a whites=()
+declare -a bg0=()
+declare -a bg1=()
+declare -a bg2=()
+declare -a bg3=()
+declare -a bg4=()
+declare -a bg5=()
+declare -a bg6=()
+declare -a bg7=()
 
 mode="light"   # default: 90-97
+icase="0"
 
 process_arg() {
   if [[ "$1" =~ ^/(.+)/$ ]]; then
@@ -21,34 +30,67 @@ process_arg() {
 
 cur=""
 auto_idx=0
+has_args=false
 
 while [[ $# -gt 0 ]]; do
+  has_args=true
   case "$1" in
     -d) mode="dark" ;;
     -l) mode="light" ;;
+    -i) icase="1" ;;
     -k) cur=blacks ;;
     -r) cur=reds ;;
     -g) cur=greens ;;
     -y) cur=yellows ;;
     -b) cur=blues ;;
-    -p) cur=purples ;;
+    -m) cur=purples ;;
     -c) cur=cyans ;;
     -w) cur=whites ;;
+    -[krgybmcw][0-7])
+      fg="${1:1:1}" bg="${1:2:1}"
+      case "$fg" in
+        k) cur_fg=blacks ;; r) cur_fg=reds ;; g) cur_fg=greens ;; y) cur_fg=yellows ;;
+        b) cur_fg=blues ;; m) cur_fg=purples ;; c) cur_fg=cyans ;; w) cur_fg=whites ;;
+      esac
+      cur="bg${bg}+${cur_fg}" ;;
+    -0) cur=bg0 ;;
+    -1) cur=bg1 ;;
+    -2) cur=bg2 ;;
+    -3) cur=bg3 ;;
+    -4) cur=bg4 ;;
+    -5) cur=bg5 ;;
+    -6) cur=bg6 ;;
+    -7) cur=bg7 ;;
     -*)
-      echo "Usage: [-d|-l] [-k|-r|-g|-y|-b|-p|-c|-w] [words...]"; exit 1 ;;
+      echo "Usage: [-d|-l] [-k|-r|-g|-y|-b|-m|-c|-w] [-0..-7] [words...]"; exit 1 ;;
     *)
       arg="$(process_arg "$1")"
       if [[ -n "$cur" ]]; then
-        case "$cur" in
-          blacks)  blacks+=("$arg") ;;
-          reds)    reds+=("$arg") ;;
-          greens)  greens+=("$arg") ;;
-          yellows) yellows+=("$arg") ;;
-          blues)   blues+=("$arg") ;;
-          purples) purples+=("$arg") ;;
-          cyans)   cyans+=("$arg") ;;
-          whites)  whites+=("$arg") ;;
-        esac
+        if [[ "$cur" == *+* ]]; then
+          bg_part="${cur%%+*}"
+          fg_part="${cur##*+}"
+          eval "${bg_part}+=(\"\$arg\")"
+          eval "${fg_part}+=(\"\$arg\")"
+        else
+          case "$cur" in
+            blacks)  blacks+=("$arg") ;;
+            reds)    reds+=("$arg") ;;
+            greens)  greens+=("$arg") ;;
+            yellows) yellows+=("$arg") ;;
+            blues)   blues+=("$arg") ;;
+            purples) purples+=("$arg") ;;
+            cyans)   cyans+=("$arg") ;;
+            whites)  whites+=("$arg") ;;
+            bg0)     bg0+=("$arg") ;;
+            bg1)     bg1+=("$arg") ;;
+            bg2)     bg2+=("$arg") ;;
+            bg3)     bg3+=("$arg") ;;
+            bg4)     bg4+=("$arg") ;;
+            bg5)     bg5+=("$arg") ;;
+            bg6)     bg6+=("$arg") ;;
+            bg7)     bg7+=("$arg") ;;
+          esac
+        fi
       else
         case $((auto_idx % 5)) in
           0) reds+=("$arg") ;;
@@ -64,6 +106,16 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
+if ! $has_args; then
+  icase="1"
+  for w in Fatal Critical Alert Alart Exception Crash Abort Failed Panic Corrupt Overflow Underflow Invalid; do
+    reds+=("L$w")
+  done
+  for w in Caution Deprecated Timeout Denied Refused Unauthorized Forbidden Unavailable Disconnect Reset Unexpected Broken; do
+    purples+=("L$w")
+  done
+fi
+
 join() { local IFS=,; echo "$*"; }
 
 black_list=$(join "${blacks[@]}")
@@ -74,7 +126,16 @@ blue_list=$(join "${blues[@]}")
 purple_list=$(join "${purples[@]}")
 cyan_list=$(join "${cyans[@]}")
 white_list=$(join "${whites[@]}")
+bg0_list=$(join "${bg0[@]}")
+bg1_list=$(join "${bg1[@]}")
+bg2_list=$(join "${bg2[@]}")
+bg3_list=$(join "${bg3[@]}")
+bg4_list=$(join "${bg4[@]}")
+bg5_list=$(join "${bg5[@]}")
+bg6_list=$(join "${bg6[@]}")
+bg7_list=$(join "${bg7[@]}")
 
+CC_ICASE="$icase" \
 CC_MODE="$mode" \
 CC_K="$black_list" \
 CC_R="$red_list" \
@@ -84,10 +145,18 @@ CC_B="$blue_list" \
 CC_P="$purple_list" \
 CC_C="$cyan_list" \
 CC_W="$white_list" \
+CC_BG0="$bg0_list" \
+CC_BG1="$bg1_list" \
+CC_BG2="$bg2_list" \
+CC_BG3="$bg3_list" \
+CC_BG4="$bg4_list" \
+CC_BG5="$bg5_list" \
+CC_BG6="$bg6_list" \
+CC_BG7="$bg7_list" \
 awk '
 BEGIN {
-  if (ENVIRON["CC_MODE"] == "dark") base=30
-  else base=90
+  if (ENVIRON["CC_MODE"] == "dark") { base=30; bgbase=100 }
+  else { base=90; bgbase=40 }
 
   split(ENVIRON["CC_K"], K, ",")
   split(ENVIRON["CC_R"], R, ",")
@@ -97,6 +166,14 @@ BEGIN {
   split(ENVIRON["CC_P"], P, ",")
   split(ENVIRON["CC_C"], C, ",")
   split(ENVIRON["CC_W"], W, ",")
+  split(ENVIRON["CC_BG0"], BG0, ",")
+  split(ENVIRON["CC_BG1"], BG1, ",")
+  split(ENVIRON["CC_BG2"], BG2, ",")
+  split(ENVIRON["CC_BG3"], BG3, ",")
+  split(ENVIRON["CC_BG4"], BG4, ",")
+  split(ENVIRON["CC_BG5"], BG5, ",")
+  split(ENVIRON["CC_BG6"], BG6, ",")
+  split(ENVIRON["CC_BG7"], BG7, ",")
 
   COL["K"]="\033[" base "m"
   COL["R"]="\033[" base+1 "m"
@@ -106,8 +183,18 @@ BEGIN {
   COL["P"]="\033[" base+5 "m"
   COL["C"]="\033[" base+6 "m"
   COL["W"]="\033[" base+7 "m"
+  COL["BG0"]="\033[" bgbase "m"
+  COL["BG1"]="\033[" bgbase+1 "m"
+  COL["BG2"]="\033[" bgbase+2 "m"
+  COL["BG3"]="\033[" bgbase+3 "m"
+  COL["BG4"]="\033[" bgbase+4 "m"
+  COL["BG5"]="\033[" bgbase+5 "m"
+  COL["BG6"]="\033[" bgbase+6 "m"
+  COL["BG7"]="\033[" bgbase+7 "m"
 
   RESET="\033[0m"
+  ICASE=(ENVIRON["CC_ICASE"] == "1")
+  if (ICASE) IGNORECASE=1
 }
 function literal_replace(s, lit, rep,    result, pos, len) {
   len = length(lit)
@@ -116,6 +203,20 @@ function literal_replace(s, lit, rep,    result, pos, len) {
   while ((pos = index(s, lit)) > 0) {
     result = result substr(s, 1, pos - 1) rep
     s = substr(s, pos + len)
+  }
+  return result s
+}
+function literal_replace_icase(s, lit, col,    result, pos, len, lower_s, lower_lit, orig) {
+  len = length(lit)
+  if (len == 0) return s
+  lower_lit = tolower(lit)
+  result = ""
+  lower_s = tolower(s)
+  while ((pos = index(lower_s, lower_lit)) > 0) {
+    orig = substr(s, pos, len)
+    result = result substr(s, 1, pos - 1) col orig RESET
+    s = substr(s, pos + len)
+    lower_s = substr(lower_s, pos + len)
   }
   return result s
 }
@@ -143,12 +244,16 @@ function color_sub(line, pat, is_re, col,    result, pre, esc, rest) {
     rest = substr(rest, RSTART + RLENGTH)
     if (is_re)
       pre = regex_replace(pre, pat, col)
+    else if (ICASE)
+      pre = literal_replace_icase(pre, pat, col)
     else
       pre = literal_replace(pre, pat, col pat RESET)
     result = result pre esc
   }
   if (is_re)
     rest = regex_replace(rest, pat, col)
+  else if (ICASE)
+    rest = literal_replace_icase(rest, pat, col)
   else
     rest = literal_replace(rest, pat, col pat RESET)
   return result rest
@@ -171,6 +276,14 @@ function apply_color(arr, col,    i, mode, pat) {
   apply_color(P, COL["P"])
   apply_color(C, COL["C"])
   apply_color(W, COL["W"])
+  apply_color(BG0, COL["BG0"])
+  apply_color(BG1, COL["BG1"])
+  apply_color(BG2, COL["BG2"])
+  apply_color(BG3, COL["BG3"])
+  apply_color(BG4, COL["BG4"])
+  apply_color(BG5, COL["BG5"])
+  apply_color(BG6, COL["BG6"])
+  apply_color(BG7, COL["BG7"])
 
   print
 }

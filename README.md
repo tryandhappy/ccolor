@@ -2,6 +2,36 @@
 
 
 
+# Options
+
+|Option|Description|
+|----|----|
+|-i|Case insensitive.|
+|-l|Font color Light, Backgroup color Dark.|
+|-d|Font color Dark, Backgroup color Ligit.|
+
+|Font|Background|Color|
+|----|----|----|
+|-k|-0|Black|
+|-r|-1|Red|
+|-g|-2|Green|
+|-y|-3|Yellow|
+|-p|-4|Purple|
+|-m|-5|Magenta|
+|-c|-6|Cyan|
+|-w|-7|White|
+
+
+## Default value when the argument in not specified
+
+```
+ccolor \
+  -r Fatal Critical Alert Alart Exception Crash Abort Failed Panic Corrupt Overflow Underflow Invalid \
+  -m Caution Deprecated Timeout Denied Refused Unauthorized Forbidden Unavailable Disconnect Reset Unexpected Broken
+```
+
+
+
 
 # Usage
 
@@ -61,6 +91,8 @@ $ echo "AAA BBB CCC DDD EEE FFF GGG" | ccolor -r AA -g BB -b CC -p DD -c EE -k F
 $ echo "AAA BBB CCC DDD EEE FFF GGG" | ccolor -r /A+/ -g /B+/ -b /C[C]/ -p /DDD?/ -c /EE*/
 ```
 ![sample7](docs/images/sample7.png)
+
+
 
 
 
