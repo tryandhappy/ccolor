@@ -119,6 +119,21 @@ function literal_replace(s, lit, rep,    result, pos, len) {
   }
   return result s
 }
+function regex_replace(s, pat, col,    result, matched) {
+  result = ""
+  while (match(s, pat)) {
+    if (RLENGTH == 0) {
+      result = result substr(s, 1, 1)
+      s = substr(s, 2)
+      if (s == "") break
+      continue
+    }
+    matched = substr(s, RSTART, RLENGTH)
+    result = result substr(s, 1, RSTART - 1) col matched RESET
+    s = substr(s, RSTART + RLENGTH)
+  }
+  return result s
+}
 function color_sub(line, pat, is_re, col,    result, pre, esc, rest) {
   result = ""
   rest = line
@@ -127,13 +142,13 @@ function color_sub(line, pat, is_re, col,    result, pre, esc, rest) {
     esc = substr(rest, RSTART, RLENGTH)
     rest = substr(rest, RSTART + RLENGTH)
     if (is_re)
-      gsub(pat, col "&" RESET, pre)
+      pre = regex_replace(pre, pat, col)
     else
       pre = literal_replace(pre, pat, col pat RESET)
     result = result pre esc
   }
   if (is_re)
-    gsub(pat, col "&" RESET, rest)
+    rest = regex_replace(rest, pat, col)
   else
     rest = literal_replace(rest, pat, col pat RESET)
   return result rest

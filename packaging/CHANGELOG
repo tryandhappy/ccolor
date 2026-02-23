@@ -1,3 +1,7 @@
+* 0.1.2-1 2026-02-23 tryandhappy <tryandhappy@users.noreply.github.com>
+- Fixed a bug where patterns containing ? or * in a regular expression tried to highlight zero-length matches.
+
+
 * 0.1.1-1 2026-02-23 tryandhappy <tryandhappy@users.noreply.github.com>
 - Automatically select colors, excluding yellow.
 

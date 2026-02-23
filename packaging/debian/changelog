@@ -1,3 +1,9 @@
+ccolor (0.1.2-1) unstable; urgency=medium
+
+  * Fixed a bug where patterns containing ? or * in a regular expression tried to highlight zero-length matches.
+
+ -- tryandhappy <tryandhappy@users.noreply.github.com>  Mon, 23 Feb 2026 00:00:00 +0000
+
 ccolor (0.1.1-1) unstable; urgency=medium
 
   * Automatically select colors, excluding yellow.
