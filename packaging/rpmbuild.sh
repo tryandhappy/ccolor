@@ -32,3 +32,7 @@ d
 }" "$SPEC_IN" <<< "$RPM_CHANGELOG" > "$SPEC"
 
 rpmbuild --define "_topdir $(pwd)/rpmbuild" --define "pkg_ver ${VERSION}" -ba "$SPEC"
+
+cp -f rpmbuild/RPMS/noarch/ccolor-*.noarch.rpm ./
+cp -f ccolor-*.noarch.rpm ./ccolor.noarch.rpm
+

@@ -13,4 +13,5 @@ packaging/debian/ccolor/
 packaging/debian/*.substvars
 packaging/debian/debhelper-build-stamp
 packaging/debian/files
-
+packaging/*.rpm
+packaging/*.deb
