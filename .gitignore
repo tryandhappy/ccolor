@@ -15,3 +15,6 @@ packaging/debian/debhelper-build-stamp
 packaging/debian/files
 packaging/*.rpm
 packaging/*.deb
+packaging/snap/prime/
+packaging/snap/*.snap
+
