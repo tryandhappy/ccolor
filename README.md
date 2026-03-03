@@ -222,7 +222,6 @@ cd packaging
 ```
 PS1='$ '
 
-
 echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -k0 BBB -k1 CCC -k2 DDD -k3 EEE -k4 FFF -k5 GGG -k6 HHH -k7 III
 echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -r0 BBB -r1 CCC -r2 DDD -r3 EEE -r4 FFF -r5 GGG -r6 HHH -r7 III
 echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -g0 BBB -g1 CCC -g2 DDD -g3 EEE -r4 FFF -g5 GGG -g6 HHH -g7 III
@@ -232,8 +231,6 @@ echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -m0 BBB -m1 CCC -m2 DDD -m3 EEE -m4
 echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -c0 BBB -c1 CCC -c2 DDD -c3 EEE -c4 FFF -c5 GGG -c6 HHH -c7 III
 echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -w0 BBB -w1 CCC -w2 DDD -w3 EEE -w4 FFF -w5 GGG -w6 HHH -w7 III
 
-
-
 echo ABC-k0-k1-k2-k4-k5-k6-k7ABC | ccolor -k0 'k0' -k1 '-k1' -k2 '-k2' -k3 EEE -k4 FFF -k5 GGG -k6 HHH -k7 III
 echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -r0 BBB -r1 CCC -r2 DDD -r3 EEE -r4 FFF -r5 GGG -r6 HHH -r7 III
 echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -g0 BBB -g1 CCC -g2 DDD -g3 EEE -r4 FFF -g5 GGG -g6 HHH -g7 III
@@ -242,8 +239,6 @@ echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -b0 BBB -b1 CCC -b2 DDD -b3 EEE -b4
 echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -m0 BBB -m1 CCC -m2 DDD -m3 EEE -m4 FFF -m5 GGG -m6 HHH -m7 III
 echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -c0 BBB -c1 CCC -c2 DDD -c3 EEE -c4 FFF -c5 GGG -c6 HHH -c7 III
 echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -w0 BBB -w1 CCC -w2 DDD -w3 EEE -w4 FFF -w5 GGG -w6 HHH -w7 III
-
-
 
 echo ABC  k  r  g  y  b  m  c  w ABC | ccolor  -k  k  -r  r  -g  g  -y  y  -b  b  -m  m  -c  c  -w  w
 echo ABC  0  1  2  3  4  5  6  7 ABC | ccolor  -0  0  -1  1  -2  2  -3  3  -4  4  -5  5  -6  6  -7  7
@@ -256,7 +251,6 @@ echo ABC m0 m1 m2 m3 m4 m5 m6 m7 ABC | ccolor -m0 m0 -m1 m1 -m2 m2 -m3 m3 -m4 m4
 echo ABC c0 c1 c2 c3 c4 c5 c6 c7 ABC | ccolor -c0 c0 -c1 c1 -c2 c2 -c3 c3 -c4 c4 -c5 c5 -c6 c6 -c7 c7
 echo ABC w0 w1 w2 w3 w4 w5 w6 w7 ABC | ccolor -w0 w0 -w1 w1 -w2 w2 -w3 w3 -w4 w4 -w5 w5 -w6 w6 -w7 w7
 
-
 echo ABC k0 k1 k2 k3 k4 k5 k6 k7 ABC | ccolor -d -k0 k0 -k1 k1 -k2 k2 -k3 k3 -k4 k4 -k5 k5 -k6 k6 -k7 k7
 echo ABC r0 r1 r2 r3 r4 r5 r6 r7 ABC | ccolor -d -r0 r0 -r1 r1 -r2 r2 -r3 r3 -r4 r4 -r5 r5 -r6 r6 -r7 r7
 echo ABC g0 g1 g2 g3 g4 g5 g6 g7 ABC | ccolor -d -g0 g0 -g1 g1 -g2 g2 -g3 g3 -g4 g4 -g5 g5 -g6 g6 -g7 g7
@@ -265,8 +259,6 @@ echo ABC b0 b1 b2 b3 b4 b5 b6 b7 ABC | ccolor -d -b0 b0 -b1 b1 -b2 b2 -b3 b3 -b4
 echo ABC m0 m1 m2 m3 m4 m5 m6 m7 ABC | ccolor -d -m0 m0 -m1 m1 -m2 m2 -m3 m3 -m4 m4 -m5 m5 -m6 m6 -m7 m7
 echo ABC c0 c1 c2 c3 c4 c5 c6 c7 ABC | ccolor -d -c0 c0 -c1 c1 -c2 c2 -c3 c3 -c4 c4 -c5 c5 -c6 c6 -c7 c7
 echo ABC w0 w1 w2 w3 w4 w5 w6 w7 ABC | ccolor -d -w0 w0 -w1 w1 -w2 w2 -w3 w3 -w4 w4 -w5 w5 -w6 w6 -w7 w7
-
-
 
 echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -l -r0 BBB -r1 CCC -r2 DDD -r3 EEE -r4 FFF -r5 GGG -r6 HHH -r7 III
 echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -d -r0 BBB -r1 CCC -r2 DDD -r3 EEE -r4 FFF -r5 GGG -r6 HHH -r7 III
