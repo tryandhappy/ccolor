@@ -1,0 +1,314 @@
+#!/usr/bin/env bash
+
+declare -a blacks=()
+declare -a reds=()
+declare -a greens=()
+declare -a yellows=()
+declare -a blues=()
+declare -a purples=()
+declare -a cyans=()
+declare -a whites=()
+declare -a bg0=()
+declare -a bg1=()
+declare -a bg2=()
+declare -a bg3=()
+declare -a bg4=()
+declare -a bg5=()
+declare -a bg6=()
+declare -a bg7=()
+
+mode="light"   # default: 90-97
+icase="0"
+
+process_arg() {
+  if [[ "$1" =~ ^/(.+)/$ ]]; then
+    _arg="R${BASH_REMATCH[1]}"
+  else
+    _arg="L$1"
+  fi
+}
+
+add_to() { case "$1" in
+  blacks)  blacks+=("$2") ;; reds)    reds+=("$2") ;;
+  greens)  greens+=("$2") ;; yellows) yellows+=("$2") ;;
+  blues)   blues+=("$2") ;; purples) purples+=("$2") ;;
+  cyans)   cyans+=("$2") ;; whites)  whites+=("$2") ;;
+  bg0) bg0+=("$2") ;; bg1) bg1+=("$2") ;; bg2) bg2+=("$2") ;; bg3) bg3+=("$2") ;;
+  bg4) bg4+=("$2") ;; bg5) bg5+=("$2") ;; bg6) bg6+=("$2") ;; bg7) bg7+=("$2") ;;
+esac; }
+
+cur=""
+auto_idx=0
+has_args=false
+
+while [[ $# -gt 0 ]]; do
+  has_args=true
+  if [[ "$1" == \\* ]]; then
+    process_arg "${1#\\}"; arg="${mode:0:1}${_arg}"
+  else
+  case "$1" in
+    -[dl]?*)
+      mode_ch="${1:1:1}"
+      rest="${1:2}"
+      if [[ "$mode_ch" == "d" ]]; then mode="dark"; else mode="light"; fi
+      if [[ -n "$rest" ]]; then shift; set -- "-${rest}" "$@"; continue; fi ;;
+    -d) mode="dark"; shift; continue ;;
+    -l) mode="light"; shift; continue ;;
+    -i) icase="1"; shift; continue ;;
+    -k) cur=blacks; shift; continue ;;
+    -r) cur=reds; shift; continue ;;
+    -g) cur=greens; shift; continue ;;
+    -y) cur=yellows; shift; continue ;;
+    -b) cur=blues; shift; continue ;;
+    -m) cur=purples; shift; continue ;;
+    -c) cur=cyans; shift; continue ;;
+    -w) cur=whites; shift; continue ;;
+    -[krgybmcw][0-7])
+      fg="${1:1:1}" bg="${1:2:1}"
+      case "$fg" in
+        k) cur_fg=blacks ;; r) cur_fg=reds ;; g) cur_fg=greens ;; y) cur_fg=yellows ;;
+        b) cur_fg=blues ;; m) cur_fg=purples ;; c) cur_fg=cyans ;; w) cur_fg=whites ;;
+      esac
+      cur="bg${bg}+${cur_fg}"; shift; continue ;;
+    -[0-7][krgybmcw])
+      bg="${1:1:1}" fg="${1:2:1}"
+      case "$fg" in
+        k) cur_fg=blacks ;; r) cur_fg=reds ;; g) cur_fg=greens ;; y) cur_fg=yellows ;;
+        b) cur_fg=blues ;; m) cur_fg=purples ;; c) cur_fg=cyans ;; w) cur_fg=whites ;;
+      esac
+      cur="bg${bg}+${cur_fg}"; shift; continue ;;
+    -0) cur=bg0; shift; continue ;;
+    -1) cur=bg1; shift; continue ;;
+    -2) cur=bg2; shift; continue ;;
+    -3) cur=bg3; shift; continue ;;
+    -4) cur=bg4; shift; continue ;;
+    -5) cur=bg5; shift; continue ;;
+    -6) cur=bg6; shift; continue ;;
+    -7) cur=bg7; shift; continue ;;
+    -h)
+      self="$0"
+      echo 'Usage: [-d|-l] [-k|-r|-g|-y|-b|-m|-c|-w] [-0..-7] [words...]'
+      echo
+      echo 'Sample:'
+      echo '  echo AAABBBCCCDDDEEE | ccolor BBB'
+      echo '  AAABBBCCCDDDEEE' | "$self" BBB
+      echo
+      echo '  echo AAABBBCCCDDDEEE | ccolor BBB /DDD*/'
+      echo '  AAABBBCCCDDDEEE' | "$self" BBB /DDD*/
+      echo
+      echo '  echo AAABBBCCCDDDEEE | ccolor -y BBB -m4 DDD'
+      echo '  AAABBBCCCDDDEEE' | "$self" -y BBB -m4 DDD
+      echo
+      echo '  echo "Failed: AAABBBCCCDDDEEE" | ccolor'
+      echo '  Failed: AAABBBCCCDDDEEE' | "$self"
+      echo
+      echo 'Color Sample:'
+      echo '     TEXT COLOR     -k  -r  -g  -y  -b  -m  -c  -w' | "$self"  -k  '\-k'  -r  '\-r'  -g  '\-g'  -y  '\-y'  -b  '\-b'  -m  '\-m'  -c  '\-c'  -w  '\-w'
+      echo '       BG COLOR     -0  -1  -2  -3  -4  -5  -6  -7' | "$self"  -0  '\-0'  -1  '\-1'  -2  '\-2'  -3  '\-3'  -4  '\-4'  -5  '\-5'  -6  '\-6'  -7  '\-7'
+      echo '          BLACK    -k0 -k1 -k2 -k3 -k4 -k5 -k6 -k7' | "$self" -k0 '\-k0' -k1 '\-k1' -k2 '\-k2' -k3 '\-k3' -k4 '\-k4' -k5 '\-k5' -k6 '\-k6' -k7 '\-k7'
+      echo '            RED    -r0 -r1 -r2 -r3 -r4 -r5 -r6 -r7' | "$self" -r0 '\-r0' -r1 '\-r1' -r2 '\-r2' -r3 '\-r3' -r4 '\-r4' -r5 '\-r5' -r6 '\-r6' -r7 '\-r7'
+      echo '          GREEN    -g0 -g1 -g2 -g3 -g4 -g5 -g6 -g7' | "$self" -g0 '\-g0' -g1 '\-g1' -g2 '\-g2' -g3 '\-g3' -g4 '\-g4' -g5 '\-g5' -g6 '\-g6' -g7 '\-g7'
+      echo '         YELLOW    -y0 -y1 -y2 -y3 -y4 -y5 -y6 -y7' | "$self" -y0 '\-y0' -y1 '\-y1' -y2 '\-y2' -y3 '\-y3' -y4 '\-y4' -y5 '\-y5' -y6 '\-y6' -y7 '\-y7'
+      echo '           BLUE    -b0 -b1 -b2 -b3 -b4 -b5 -b6 -b7' | "$self" -b0 '\-b0' -b1 '\-b1' -b2 '\-b2' -b3 '\-b3' -b4 '\-b4' -b5 '\-b5' -b6 '\-b6' -b7 '\-b7'
+      echo '        MAGENTA    -m0 -m1 -m2 -m3 -m4 -m5 -m6 -m7' | "$self" -m0 '\-m0' -m1 '\-m1' -m2 '\-m2' -m3 '\-m3' -m4 '\-m4' -m5 '\-m5' -m6 '\-m6' -m7 '\-m7'
+      echo '           CYAN    -c0 -c1 -c2 -c3 -c4 -c5 -c6 -c7' | "$self" -c0 '\-c0' -c1 '\-c1' -c2 '\-c2' -c3 '\-c3' -c4 '\-c4' -c5 '\-c5' -c6 '\-c6' -c7 '\-c7'
+      echo '          WHITE    -w0 -w1 -w2 -w3 -w4 -w5 -w6 -w7' | "$self" -w0 '\-w0' -w1 '\-w1' -w2 '\-w2' -w3 '\-w3' -w4 '\-w4' -w5 '\-w5' -w6 '\-w6' -w7 '\-w7'
+      echo
+      echo 'DARK TEXT COLOR -d  -k  -r  -g  -y  -b  -m  -c  -w' | "$self" -d  -k  '\-k'  -r  '\-r'  -g  '\-g'  -y  '\-y'  -b  '\-b'  -m  '\-m'  -c  '\-c'  -w  '\-w'
+      echo 'DARK   BG COLOR -d  -0  -1  -2  -3  -4  -5  -6  -7' | "$self" -d  -0  '\-0'  -1  '\-1'  -2  '\-2'  -3  '\-3'  -4  '\-4'  -5  '\-5'  -6  '\-6'  -7  '\-7'
+      echo 'DARK      BLACK -d -k0 -k1 -k2 -k3 -k4 -k5 -k6 -k7' | "$self" -d -k0 '\-k0' -k1 '\-k1' -k2 '\-k2' -k3 '\-k3' -k4 '\-k4' -k5 '\-k5' -k6 '\-k6' -k7 '\-k7'
+      echo 'DARK        RED -d -r0 -r1 -r2 -r3 -r4 -r5 -r6 -r7' | "$self" -d -r0 '\-r0' -r1 '\-r1' -r2 '\-r2' -r3 '\-r3' -r4 '\-r4' -r5 '\-r5' -r6 '\-r6' -r7 '\-r7'
+      echo 'DARK      GREEN -d -g0 -g1 -g2 -g3 -g4 -g5 -g6 -g7' | "$self" -d -g0 '\-g0' -g1 '\-g1' -g2 '\-g2' -g3 '\-g3' -g4 '\-g4' -g5 '\-g5' -g6 '\-g6' -g7 '\-g7'
+      echo 'DARK     YELLOW -d -y0 -y1 -y2 -y3 -y4 -y5 -y6 -y7' | "$self" -d -y0 '\-y0' -y1 '\-y1' -y2 '\-y2' -y3 '\-y3' -y4 '\-y4' -y5 '\-y5' -y6 '\-y6' -y7 '\-y7'
+      echo 'DARK       BLUE -d -b0 -b1 -b2 -b3 -b4 -b5 -b6 -b7' | "$self" -d -b0 '\-b0' -b1 '\-b1' -b2 '\-b2' -b3 '\-b3' -b4 '\-b4' -b5 '\-b5' -b6 '\-b6' -b7 '\-b7'
+      echo 'DARK    MAGENTA -d -m0 -m1 -m2 -m3 -m4 -m5 -m6 -m7' | "$self" -d -m0 '\-m0' -m1 '\-m1' -m2 '\-m2' -m3 '\-m3' -m4 '\-m4' -m5 '\-m5' -m6 '\-m6' -m7 '\-m7'
+      echo 'DARK       CYAN -d -c0 -c1 -c2 -c3 -c4 -c5 -c6 -c7' | "$self" -d -c0 '\-c0' -c1 '\-c1' -c2 '\-c2' -c3 '\-c3' -c4 '\-c4' -c5 '\-c5' -c6 '\-c6' -c7 '\-c7'
+      echo 'DARK      WHITE -d -w0 -w1 -w2 -w3 -w4 -w5 -w6 -w7' | "$self" -d -w0 '\-w0' -w1 '\-w1' -w2 '\-w2' -w3 '\-w3' -w4 '\-w4' -w5 '\-w5' -w6 '\-w6' -w7 '\-w7'
+      exit 0 ;;
+    -*)
+      echo "Usage: [-d|-l] [-k|-r|-g|-y|-b|-m|-c|-w] [-0..-7] [words...]"; exit 1 ;;
+    *)
+      process_arg "$1"; arg="${mode:0:1}${_arg}"
+      ;;
+  esac
+  fi
+      if [[ -n "$cur" ]]; then
+        if [[ "$cur" == *+* ]]; then
+          add_to "${cur%%+*}" "$arg"
+          add_to "${cur##*+}" "$arg"
+        else
+          add_to "$cur" "$arg"
+        fi
+      else
+        case $((auto_idx % 5)) in
+          0) reds+=("$arg") ;;
+          1) greens+=("$arg") ;;
+          2) blues+=("$arg") ;;
+          3) purples+=("$arg") ;;
+          4) cyans+=("$arg") ;;
+        esac
+        ((auto_idx++))
+      fi
+  shift
+done
+
+if ! $has_args; then
+  icase="1"
+  for w in Fatal Critical Alert Alart Exception Crash Abort Failed Panic Corrupt Overflow Underflow Invalid; do
+    reds+=("${mode:0:1}L$w")
+  done
+  for w in Caution Deprecated Timeout Denied Refused Unauthorized Forbidden Unavailable Disconnect Reset Unexpected Broken; do
+    purples+=("${mode:0:1}L$w")
+  done
+fi
+
+join() { local _n=$1; shift; local IFS=,; printf -v "$_n" '%s' "$*"; }
+join CC_K   "${blacks[@]}"
+join CC_R   "${reds[@]}"
+join CC_G   "${greens[@]}"
+join CC_Y   "${yellows[@]}"
+join CC_B   "${blues[@]}"
+join CC_P   "${purples[@]}"
+join CC_C   "${cyans[@]}"
+join CC_W   "${whites[@]}"
+join CC_BG0 "${bg0[@]}"
+join CC_BG1 "${bg1[@]}"
+join CC_BG2 "${bg2[@]}"
+join CC_BG3 "${bg3[@]}"
+join CC_BG4 "${bg4[@]}"
+join CC_BG5 "${bg5[@]}"
+join CC_BG6 "${bg6[@]}"
+join CC_BG7 "${bg7[@]}"
+
+CC_ICASE="$icase" \
+CC_K="$CC_K" \
+CC_R="$CC_R" \
+CC_G="$CC_G" \
+CC_Y="$CC_Y" \
+CC_B="$CC_B" \
+CC_P="$CC_P" \
+CC_C="$CC_C" \
+CC_W="$CC_W" \
+CC_BG0="$CC_BG0" \
+CC_BG1="$CC_BG1" \
+CC_BG2="$CC_BG2" \
+CC_BG3="$CC_BG3" \
+CC_BG4="$CC_BG4" \
+CC_BG5="$CC_BG5" \
+CC_BG6="$CC_BG6" \
+CC_BG7="$CC_BG7" \
+awk '
+BEGIN {
+  RESET="\033[0m"
+  ICASE=(ENVIRON["CC_ICASE"] == "1")
+  if (ICASE) IGNORECASE=1
+
+  # pre-compute color codes for all mode/offset combinations
+  for (o = 0; o <= 7; o++) {
+    COL["l",o] = "\033[" (90+o) "m"
+    COL["d",o] = "\033[" (30+o) "m"
+    BG["l",o]  = "\033[" (40+o) "m"
+    BG["d",o]  = "\033[" (100+o) "m"
+  }
+
+  # parse all rules into a single flat array
+  NC = 0
+  split_rules("CC_K",   0, 0)
+  split_rules("CC_R",   1, 0)
+  split_rules("CC_G",   2, 0)
+  split_rules("CC_Y",   3, 0)
+  split_rules("CC_B",   4, 0)
+  split_rules("CC_P",   5, 0)
+  split_rules("CC_C",   6, 0)
+  split_rules("CC_W",   7, 0)
+  split_rules("CC_BG0", 0, 1)
+  split_rules("CC_BG1", 1, 1)
+  split_rules("CC_BG2", 2, 1)
+  split_rules("CC_BG3", 3, 1)
+  split_rules("CC_BG4", 4, 1)
+  split_rules("CC_BG5", 5, 1)
+  split_rules("CC_BG6", 6, 1)
+  split_rules("CC_BG7", 7, 1)
+}
+function split_rules(env, offset, is_bg,    n, a, i, m, typ, pat) {
+  n = split(ENVIRON[env], a, ",")
+  for (i = 1; i <= n; i++) {
+    if (a[i] == "") continue
+    m   = substr(a[i], 1, 1)
+    typ = substr(a[i], 2, 1)
+    pat = substr(a[i], 3)
+    if (pat == "") continue
+    NC++
+    R_PAT[NC]  = pat
+    R_IS_RE[NC] = (typ == "R")
+    R_COL[NC]  = is_bg ? BG[m,offset] : COL[m,offset]
+  }
+}
+function literal_replace(s, lit, rep,    result, pos, len) {
+  len = length(lit)
+  if (len == 0) return s
+  result = ""
+  while ((pos = index(s, lit)) > 0) {
+    result = result substr(s, 1, pos - 1) rep
+    s = substr(s, pos + len)
+  }
+  return result s
+}
+function literal_replace_icase(s, lit, col,    result, pos, len, lower_s, lower_lit, orig) {
+  len = length(lit)
+  if (len == 0) return s
+  lower_lit = tolower(lit)
+  result = ""
+  lower_s = tolower(s)
+  while ((pos = index(lower_s, lower_lit)) > 0) {
+    orig = substr(s, pos, len)
+    result = result substr(s, 1, pos - 1) col orig RESET
+    s = substr(s, pos + len)
+    lower_s = substr(lower_s, pos + len)
+  }
+  return result s
+}
+function regex_replace(s, pat, col,    result, matched) {
+  result = ""
+  while (match(s, pat)) {
+    if (RLENGTH == 0) {
+      result = result substr(s, 1, 1)
+      s = substr(s, 2)
+      if (s == "") break
+      continue
+    }
+    matched = substr(s, RSTART, RLENGTH)
+    result = result substr(s, 1, RSTART - 1) col matched RESET
+    s = substr(s, RSTART + RLENGTH)
+  }
+  return result s
+}
+function color_sub(line, pat, is_re, col,    result, pre, esc, rest) {
+  result = ""
+  rest = line
+  while (match(rest, /\033\[[0-9;]*m/)) {
+    pre = substr(rest, 1, RSTART - 1)
+    esc = substr(rest, RSTART, RLENGTH)
+    rest = substr(rest, RSTART + RLENGTH)
+    if (is_re)
+      pre = regex_replace(pre, pat, col)
+    else if (ICASE)
+      pre = literal_replace_icase(pre, pat, col)
+    else
+      pre = literal_replace(pre, pat, col pat RESET)
+    result = result pre esc
+  }
+  if (is_re)
+    rest = regex_replace(rest, pat, col)
+  else if (ICASE)
+    rest = literal_replace_icase(rest, pat, col)
+  else
+    rest = literal_replace(rest, pat, col pat RESET)
+  return result rest
+}
+{
+  for (_i = 1; _i <= NC; _i++)
+    $0 = color_sub($0, R_PAT[_i], R_IS_RE[_i], R_COL[_i])
+  print
+}
+'

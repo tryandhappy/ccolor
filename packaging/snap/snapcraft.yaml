@@ -1,17 +1,20 @@
 name: ccolor
 base: core24
-version: '0.2.0'
+version: '0.3.0'
 summary: Color highlighting in the Bash command line.
 description: |
-  This is a command that simply adds color to specific words in Bash. It provides color highlighting.
-  
-  For example, when viewing large amounts of log files, it is easy to miss important text. This command makes specific words easier to notice by coloring them.
-  
-  It is written in Bash and awk, and I believe it has a very high level of safety. No network communication occurs.
-  
-  Although it is highly secure, do not allow third parties to freely input arguments. There is a possibility of some form of injection.
-  This command was created with Claude Code (Ops 4.6).
+  Color highlighting in the Bash command line.
+  Bashコマンド用に特定の文字に色を付けるハイライト機能。
 
+  It highlights patterns that require attention in logs.
+  ログの表示等で注意すべき文字をハイライトできます。
 grade: devel # devel/stable
 confinement: classic # strict/classic/devmode
+platforms:
+  amd64:
+    build-on: [amd64]
+    build-for: [amd64]
+  arm64:
+    build-on: [arm64]
+    build-for: [arm64]
 

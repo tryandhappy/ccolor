@@ -3,7 +3,7 @@ ccolor (0.3.0-1) unstable; urgency=medium
   * Handle arguments with complex patterns.
   * - Changed so that \- can be escaped.
 
- -- tryandhappy  土, 07  3月 2026 00:00:00 +0000
+ -- tryandhappy <>  Sat, 07 Mar 2026 00:00:00 +0000
 
 ccolor (0.2.0-1) unstable; urgency=medium
 
@@ -11,23 +11,23 @@ ccolor (0.2.0-1) unstable; urgency=medium
   * Add support for the -i option. Case insencitive.
   * Default options.
 
- -- tryandhappy  月, 23  2月 2026 00:00:00 +0000
+ -- tryandhappy <>  Mon, 23 Feb 2026 00:00:00 +0000
 
 ccolor (0.1.2-1) unstable; urgency=medium
 
   * Fixed a bug where patterns containing ? or * in a regular expression tried to highlight zero-length matches.
 
- -- tryandhappy  月, 23  2月 2026 00:00:00 +0000
+ -- tryandhappy <>  Mon, 23 Feb 2026 00:00:00 +0000
 
 ccolor (0.1.1-1) unstable; urgency=medium
 
   * Automatically select colors, excluding yellow.
 
- -- tryandhappy  月, 23  2月 2026 00:00:00 +0000
+ -- tryandhappy <>  Mon, 23 Feb 2026 00:00:00 +0000
 
 ccolor (0.1.0-1) unstable; urgency=medium
 
   * Nightly.
 
- -- tryandhappy  月, 23  2月 2026 00:00:00 +0000
+ -- tryandhappy <>  Mon, 23 Feb 2026 00:00:00 +0000
 

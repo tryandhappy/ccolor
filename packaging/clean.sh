@@ -4,6 +4,13 @@ cd "$(dirname "$0")"
 
 
 #
+# build
+#
+rm -rf build/*
+
+
+
+#
 # debian
 #
 rm -rf *.rpm
@@ -26,5 +33,5 @@ rm -rf rpmbuild/SRPMS/*
 #
 # snap
 #
+snapcraft clean
 rm -rf snap/*.snap
-rm -rf snap/prime/*

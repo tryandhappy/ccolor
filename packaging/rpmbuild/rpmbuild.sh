@@ -1,9 +1,12 @@
 #!/bin/bash
 
-VERSION=$(cat VERSION)
+cd "$(dirname "$0")"
 
-mkdir -p rpmbuild/SOURCES
-cp ../bin/ccolor rpmbuild/SOURCES/
+VERSION=$(cat ../VERSION)
+TOPDIR="$(pwd)"
+
+mkdir -p SOURCES BUILD RPMS SRPMS ../build
+cp ../../bin/ccolor SOURCES/
 
 # CHANGELOG から RPM 形式の changelog を生成
 gen_rpm_changelog() {
@@ -19,20 +22,19 @@ gen_rpm_changelog() {
         else
             echo ""
         fi
-    done < CHANGELOG
+    done < ../CHANGELOG
 }
 
 # テンプレートから spec を生成（CHANGELOG 埋め込み）
-SPEC_IN=rpmbuild/SPECS/ccolor.spec.in
-SPEC=rpmbuild/SPECS/ccolor.spec
+SPEC_IN=SPECS/ccolor.spec.in
+SPEC=SPECS/ccolor.spec
 RPM_CHANGELOG=$(gen_rpm_changelog)
 sed "/@CHANGELOG@/{
 r /dev/stdin
 d
 }" "$SPEC_IN" <<< "$RPM_CHANGELOG" > "$SPEC"
 
-rpmbuild --define "_topdir $(pwd)/rpmbuild" --define "pkg_ver ${VERSION}" -ba "$SPEC"
+rpmbuild --define "_topdir ${TOPDIR}" --define "pkg_ver ${VERSION}" -ba "$SPEC"
 
-cp -f rpmbuild/RPMS/noarch/ccolor-*.noarch.rpm ./
-cp -f ccolor-*.noarch.rpm ./ccolor.noarch.rpm
-
+mv -f RPMS/noarch/ccolor-${VERSION}-1.noarch.rpm ../build/
+cp -f ../build/ccolor-${VERSION}-1.noarch.rpm ../build/ccolor.noarch.rpm
