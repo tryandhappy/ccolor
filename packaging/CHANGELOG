@@ -1,15 +1,19 @@
-* 0.2.0-1 2026-02-23 tryandhappy <tryandhappy@users.noreply.github.com>
+* 0.3.0-1 2026-03-07 tryandhappy
+- Handle arguments with complex patterns.
+- - Changed so that \- can be escaped.
+
+* 0.2.0-1 2026-02-23 tryandhappy
 - Allow the background color to be specified.
 - Add support for the -i option. Case insencitive.
 - Default options.
 
 
-* 0.1.2-1 2026-02-23 tryandhappy <tryandhappy@users.noreply.github.com>
+* 0.1.2-1 2026-02-23 tryandhappy
 - Fixed a bug where patterns containing ? or * in a regular expression tried to highlight zero-length matches.
 
 
-* 0.1.1-1 2026-02-23 tryandhappy <tryandhappy@users.noreply.github.com>
+* 0.1.1-1 2026-02-23 tryandhappy
 - Automatically select colors, excluding yellow.
 
-* 0.1.0-1 2026-02-23 tryandhappy <tryandhappy@users.noreply.github.com>
+* 0.1.0-1 2026-02-23 tryandhappy
 - Nightly.

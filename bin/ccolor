@@ -22,11 +22,20 @@ icase="0"
 
 process_arg() {
   if [[ "$1" =~ ^/(.+)/$ ]]; then
-    printf '%s' "R${BASH_REMATCH[1]}"
+    _arg="R${BASH_REMATCH[1]}"
   else
-    printf '%s' "L$1"
+    _arg="L$1"
   fi
 }
+
+add_to() { case "$1" in
+  blacks)  blacks+=("$2") ;; reds)    reds+=("$2") ;;
+  greens)  greens+=("$2") ;; yellows) yellows+=("$2") ;;
+  blues)   blues+=("$2") ;; purples) purples+=("$2") ;;
+  cyans)   cyans+=("$2") ;; whites)  whites+=("$2") ;;
+  bg0) bg0+=("$2") ;; bg1) bg1+=("$2") ;; bg2) bg2+=("$2") ;; bg3) bg3+=("$2") ;;
+  bg4) bg4+=("$2") ;; bg5) bg5+=("$2") ;; bg6) bg6+=("$2") ;; bg7) bg7+=("$2") ;;
+esac; }
 
 cur=""
 auto_idx=0
@@ -35,7 +44,7 @@ has_args=false
 while [[ $# -gt 0 ]]; do
   has_args=true
   if [[ "$1" == \\* ]]; then
-    arg="${mode:0:1}$(process_arg "${1#\\}")"
+    process_arg "${1#\\}"; arg="${mode:0:1}${_arg}"
   else
   case "$1" in
     -[dl]?*)
@@ -119,35 +128,16 @@ while [[ $# -gt 0 ]]; do
     -*)
       echo "Usage: [-d|-l] [-k|-r|-g|-y|-b|-m|-c|-w] [-0..-7] [words...]"; exit 1 ;;
     *)
-      arg="${mode:0:1}$(process_arg "$1")"
+      process_arg "$1"; arg="${mode:0:1}${_arg}"
       ;;
   esac
   fi
       if [[ -n "$cur" ]]; then
         if [[ "$cur" == *+* ]]; then
-          bg_part="${cur%%+*}"
-          fg_part="${cur##*+}"
-          eval "${bg_part}+=(\"\$arg\")"
-          eval "${fg_part}+=(\"\$arg\")"
+          add_to "${cur%%+*}" "$arg"
+          add_to "${cur##*+}" "$arg"
         else
-          case "$cur" in
-            blacks)  blacks+=("$arg") ;;
-            reds)    reds+=("$arg") ;;
-            greens)  greens+=("$arg") ;;
-            yellows) yellows+=("$arg") ;;
-            blues)   blues+=("$arg") ;;
-            purples) purples+=("$arg") ;;
-            cyans)   cyans+=("$arg") ;;
-            whites)  whites+=("$arg") ;;
-            bg0)     bg0+=("$arg") ;;
-            bg1)     bg1+=("$arg") ;;
-            bg2)     bg2+=("$arg") ;;
-            bg3)     bg3+=("$arg") ;;
-            bg4)     bg4+=("$arg") ;;
-            bg5)     bg5+=("$arg") ;;
-            bg6)     bg6+=("$arg") ;;
-            bg7)     bg7+=("$arg") ;;
-          esac
+          add_to "$cur" "$arg"
         fi
       else
         case $((auto_idx % 5)) in
@@ -172,69 +162,87 @@ if ! $has_args; then
   done
 fi
 
-join() { local IFS=,; echo "$*"; }
-
-black_list=$(join "${blacks[@]}")
-red_list=$(join "${reds[@]}")
-green_list=$(join "${greens[@]}")
-yellow_list=$(join "${yellows[@]}")
-blue_list=$(join "${blues[@]}")
-purple_list=$(join "${purples[@]}")
-cyan_list=$(join "${cyans[@]}")
-white_list=$(join "${whites[@]}")
-bg0_list=$(join "${bg0[@]}")
-bg1_list=$(join "${bg1[@]}")
-bg2_list=$(join "${bg2[@]}")
-bg3_list=$(join "${bg3[@]}")
-bg4_list=$(join "${bg4[@]}")
-bg5_list=$(join "${bg5[@]}")
-bg6_list=$(join "${bg6[@]}")
-bg7_list=$(join "${bg7[@]}")
+join() { local _n=$1; shift; local IFS=,; printf -v "$_n" '%s' "$*"; }
+join CC_K   "${blacks[@]}"
+join CC_R   "${reds[@]}"
+join CC_G   "${greens[@]}"
+join CC_Y   "${yellows[@]}"
+join CC_B   "${blues[@]}"
+join CC_P   "${purples[@]}"
+join CC_C   "${cyans[@]}"
+join CC_W   "${whites[@]}"
+join CC_BG0 "${bg0[@]}"
+join CC_BG1 "${bg1[@]}"
+join CC_BG2 "${bg2[@]}"
+join CC_BG3 "${bg3[@]}"
+join CC_BG4 "${bg4[@]}"
+join CC_BG5 "${bg5[@]}"
+join CC_BG6 "${bg6[@]}"
+join CC_BG7 "${bg7[@]}"
 
 CC_ICASE="$icase" \
-CC_K="$black_list" \
-CC_R="$red_list" \
-CC_G="$green_list" \
-CC_Y="$yellow_list" \
-CC_B="$blue_list" \
-CC_P="$purple_list" \
-CC_C="$cyan_list" \
-CC_W="$white_list" \
-CC_BG0="$bg0_list" \
-CC_BG1="$bg1_list" \
-CC_BG2="$bg2_list" \
-CC_BG3="$bg3_list" \
-CC_BG4="$bg4_list" \
-CC_BG5="$bg5_list" \
-CC_BG6="$bg6_list" \
-CC_BG7="$bg7_list" \
+CC_K="$CC_K" \
+CC_R="$CC_R" \
+CC_G="$CC_G" \
+CC_Y="$CC_Y" \
+CC_B="$CC_B" \
+CC_P="$CC_P" \
+CC_C="$CC_C" \
+CC_W="$CC_W" \
+CC_BG0="$CC_BG0" \
+CC_BG1="$CC_BG1" \
+CC_BG2="$CC_BG2" \
+CC_BG3="$CC_BG3" \
+CC_BG4="$CC_BG4" \
+CC_BG5="$CC_BG5" \
+CC_BG6="$CC_BG6" \
+CC_BG7="$CC_BG7" \
 awk '
 BEGIN {
-  split(ENVIRON["CC_K"], K, ",")
-  split(ENVIRON["CC_R"], R, ",")
-  split(ENVIRON["CC_G"], G, ",")
-  split(ENVIRON["CC_Y"], Y, ",")
-  split(ENVIRON["CC_B"], B, ",")
-  split(ENVIRON["CC_P"], P, ",")
-  split(ENVIRON["CC_C"], C, ",")
-  split(ENVIRON["CC_W"], W, ",")
-  split(ENVIRON["CC_BG0"], BG0, ",")
-  split(ENVIRON["CC_BG1"], BG1, ",")
-  split(ENVIRON["CC_BG2"], BG2, ",")
-  split(ENVIRON["CC_BG3"], BG3, ",")
-  split(ENVIRON["CC_BG4"], BG4, ",")
-  split(ENVIRON["CC_BG5"], BG5, ",")
-  split(ENVIRON["CC_BG6"], BG6, ",")
-  split(ENVIRON["CC_BG7"], BG7, ",")
-
   RESET="\033[0m"
   ICASE=(ENVIRON["CC_ICASE"] == "1")
   if (ICASE) IGNORECASE=1
+
+  # pre-compute color codes for all mode/offset combinations
+  for (o = 0; o <= 7; o++) {
+    COL["l",o] = "\033[" (90+o) "m"
+    COL["d",o] = "\033[" (30+o) "m"
+    BG["l",o]  = "\033[" (40+o) "m"
+    BG["d",o]  = "\033[" (100+o) "m"
+  }
+
+  # parse all rules into a single flat array
+  NC = 0
+  split_rules("CC_K",   0, 0)
+  split_rules("CC_R",   1, 0)
+  split_rules("CC_G",   2, 0)
+  split_rules("CC_Y",   3, 0)
+  split_rules("CC_B",   4, 0)
+  split_rules("CC_P",   5, 0)
+  split_rules("CC_C",   6, 0)
+  split_rules("CC_W",   7, 0)
+  split_rules("CC_BG0", 0, 1)
+  split_rules("CC_BG1", 1, 1)
+  split_rules("CC_BG2", 2, 1)
+  split_rules("CC_BG3", 3, 1)
+  split_rules("CC_BG4", 4, 1)
+  split_rules("CC_BG5", 5, 1)
+  split_rules("CC_BG6", 6, 1)
+  split_rules("CC_BG7", 7, 1)
 }
-function get_col(m, offset, is_bg,    b) {
-  if (is_bg) b = (m == "d") ? 100 : 40
-  else       b = (m == "d") ? 30  : 90
-  return "\033[" (b + offset) "m"
+function split_rules(env, offset, is_bg,    n, a, i, m, typ, pat) {
+  n = split(ENVIRON[env], a, ",")
+  for (i = 1; i <= n; i++) {
+    if (a[i] == "") continue
+    m   = substr(a[i], 1, 1)
+    typ = substr(a[i], 2, 1)
+    pat = substr(a[i], 3)
+    if (pat == "") continue
+    NC++
+    R_PAT[NC]  = pat
+    R_IS_RE[NC] = (typ == "R")
+    R_COL[NC]  = is_bg ? BG[m,offset] : COL[m,offset]
+  }
 }
 function literal_replace(s, lit, rep,    result, pos, len) {
   len = length(lit)
@@ -298,35 +306,9 @@ function color_sub(line, pat, is_re, col,    result, pre, esc, rest) {
     rest = literal_replace(rest, pat, col pat RESET)
   return result rest
 }
-function apply_color(arr, offset, is_bg,    i, m, typ, pat, col) {
-  for (i in arr) {
-    if (arr[i] == "") continue
-    m = substr(arr[i], 1, 1)
-    typ = substr(arr[i], 2, 1)
-    pat = substr(arr[i], 3)
-    if (pat == "") continue
-    col = get_col(m, offset, is_bg)
-    $0 = color_sub($0, pat, (typ == "R"), col)
-  }
-}
 {
-  apply_color(K, 0, 0)
-  apply_color(R, 1, 0)
-  apply_color(G, 2, 0)
-  apply_color(Y, 3, 0)
-  apply_color(B, 4, 0)
-  apply_color(P, 5, 0)
-  apply_color(C, 6, 0)
-  apply_color(W, 7, 0)
-  apply_color(BG0, 0, 1)
-  apply_color(BG1, 1, 1)
-  apply_color(BG2, 2, 1)
-  apply_color(BG3, 3, 1)
-  apply_color(BG4, 4, 1)
-  apply_color(BG5, 5, 1)
-  apply_color(BG6, 6, 1)
-  apply_color(BG7, 7, 1)
-
+  for (_i = 1; _i <= NC; _i++)
+    $0 = color_sub($0, R_PAT[_i], R_IS_RE[_i], R_COL[_i])
   print
 }
 '

@@ -229,7 +229,13 @@ cd packaging
 # Test Command
 
 ```
-PS1='$ '
+tail -n 1000 /var/log/message | ccolor
+tail -n 1000 /var/log/syslog | ccolor
+
+echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -0 /A+/ -1 CCC -2 DDD -3 EEE -4 FFF -5 GGG -6 HHH -7 III
+
+echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -k BBB -r CCC -g DDD -y EEE -b FFF -m GGG -c HHH -w III
+echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -0 BBB -1 CCC -2 DDD -3 EEE -4 FFF -5 GGG -6 HHH -7 III
 
 echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -k0 BBB -k1 CCC -k2 DDD -k3 EEE -k4 FFF -k5 GGG -k6 HHH -k7 III
 echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -r0 BBB -r1 CCC -r2 DDD -r3 EEE -r4 FFF -r5 GGG -r6 HHH -r7 III
@@ -240,13 +246,14 @@ echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -m0 BBB -m1 CCC -m2 DDD -m3 EEE -m4
 echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -c0 BBB -c1 CCC -c2 DDD -c3 EEE -c4 FFF -c5 GGG -c6 HHH -c7 III
 echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -w0 BBB -w1 CCC -w2 DDD -w3 EEE -w4 FFF -w5 GGG -w6 HHH -w7 III
 
-echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -r0 BBB -r1 CCC -r2 DDD -r3 EEE -r4 FFF -r5 GGG -r6 HHH -r7 III
-echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -g0 BBB -g1 CCC -g2 DDD -g3 EEE -r4 FFF -g5 GGG -g6 HHH -g7 III
-echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -y0 BBB -y1 CCC -y2 DDD -y3 EEE -y4 FFF -y5 GGG -y6 HHH -y7 III
-echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -b0 BBB -b1 CCC -b2 DDD -b3 EEE -b4 FFF -b5 GGG -b6 HHH -b7 III
-echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -m0 BBB -m1 CCC -m2 DDD -m3 EEE -m4 FFF -m5 GGG -m6 HHH -m7 III
-echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -c0 BBB -c1 CCC -c2 DDD -c3 EEE -c4 FFF -c5 GGG -c6 HHH -c7 III
-echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -w0 BBB -w1 CCC -w2 DDD -w3 EEE -w4 FFF -w5 GGG -w6 HHH -w7 III
+echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -d -r0 BBB -r1 CCC -r2 DDD -r3 EEE -r4 FFF -r5 GGG -r6 HHH -r7 III
+echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -d -g0 BBB -g1 CCC -g2 DDD -g3 EEE -r4 FFF -g5 GGG -g6 HHH -g7 III
+echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -d -y0 BBB -y1 CCC -y2 DDD -y3 EEE -y4 FFF -y5 GGG -y6 HHH -y7 III
+echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -d -b0 BBB -b1 CCC -b2 DDD -b3 EEE -b4 FFF -b5 GGG -b6 HHH -b7 III
+echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -d -m0 BBB -m1 CCC -m2 DDD -m3 EEE -m4 FFF -m5 GGG -m6 HHH -m7 III
+echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -d -c0 BBB -c1 CCC -c2 DDD -c3 EEE -c4 FFF -c5 GGG -c6 HHH -c7 III
+echo AAABBBCCCDDDEEEFFFGGGHHHIIIJJJ | ccolor -d -w0 BBB -w1 CCC -w2 DDD -w3 EEE -w4 FFF -w5 GGG -w6 HHH -w7 III
+
 
 echo '     TEXT COLOR     -k  -r  -g  -y  -b  -m  -c  -w' | ccolor  -k  '\-k'  -r  '\-r'  -g  '\-g'  -y  '\-y'  -b  '\-b'  -m  '\-m'  -c  '\-c'  -w  '\-w'
 echo '       BG COLOR     -0  -1  -2  -3  -4  -5  -6  -7' | ccolor  -0  '\-0'  -1  '\-1'  -2  '\-2'  -3  '\-3'  -4  '\-4'  -5  '\-5'  -6  '\-6'  -7  '\-7'
@@ -270,8 +277,8 @@ echo 'DARK       CYAN -d -c0 -c1 -c2 -c3 -c4 -c5 -c6 -c7' | ccolor -d -c0 '\-c0'
 echo 'DARK      WHITE -d -w0 -w1 -w2 -w3 -w4 -w5 -w6 -w7' | ccolor -d -w0 '\-w0' -w1 '\-w1' -w2 '\-w2' -w3 '\-w3' -w4 '\-w4' -w5 '\-w5' -w6 '\-w6' -w7 '\-w7'
 
 
-echo '     WHITE  -w0  -w1  -w2  -w3  -w4  -w5  -w6  -w7 WHITE'   | ccolor -l -w0 '\-w0' -w1 '\-w1' -w2 '\-w2' -w3 '\-w3' -w4 '\-w4' -w5 '\-w5' -w6 '\-w6' -w7 '\-w7'
-echo '     WHITE -lw0 -lw1 -lw2 -lw3 -lw4 -lw5 -lw6 -lw7 WHITE'   | ccolor -lw0 '\-lw0' -lw1 '\-lw1' -lw2 '\-lw2' -lw3 '\-lw3' -lw4 '\-lw4' -lw5 '\-lw5' -lw6 '\-lw6' -lw7 '\-lw7'
-echo '     WHITE -dw0 -dw1 -dw2 -dw3 -dw4 -dw5 -dw6 -dw7 WHITE'   | ccolor -dw0 '\-dw0' -dw1 '\-dw1' -dw2 '\-dw2' -dw3 '\-dw3' -dw4 '\-dw4' -dw5 '\-dw5' -dw6 '\-dw6' -dw7 '\-dw7'
+echo '     WHITE  -w0  -w1  -w2  -w3  -w4  -w5  -w6  -w7'   | ccolor -l -w0 '\-w0' -w1 '\-w1' -w2 '\-w2' -w3 '\-w3' -w4 '\-w4' -w5 '\-w5' -w6 '\-w6' -w7 '\-w7'
+echo '     WHITE -lw0 -lw1 -lw2 -lw3 -lw4 -lw5 -lw6 -lw7'   | ccolor -lw0 '\-lw0' -lw1 '\-lw1' -lw2 '\-lw2' -lw3 '\-lw3' -lw4 '\-lw4' -lw5 '\-lw5' -lw6 '\-lw6' -lw7 '\-lw7'
+echo '     WHITE -dw0 -dw1 -dw2 -dw3 -dw4 -dw5 -dw6 -dw7'   | ccolor -dw0 '\-dw0' -dw1 '\-dw1' -dw2 '\-dw2' -dw3 '\-dw3' -dw4 '\-dw4' -dw5 '\-dw5' -dw6 '\-dw6' -dw7 '\-dw7'
 
 ```

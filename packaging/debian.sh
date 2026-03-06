@@ -40,7 +40,7 @@ gen_deb_changelog > debian/changelog
 dpkg-buildpackage -us -uc -b
 
 
-cp ../ccolor_*_all.deb ./
-cp ./ccolor_*_all.deb ./ccolor_all.deb
+cp -f ../ccolor_*_all.deb ./
+cp -f ccolor_$(cat VERSION)_all.deb ccolor_all.deb
 
 
