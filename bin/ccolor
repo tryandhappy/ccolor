@@ -34,37 +34,55 @@ has_args=false
 
 while [[ $# -gt 0 ]]; do
   has_args=true
+  if [[ "$1" == \\* ]]; then
+    arg="$(process_arg "${1#\\}")"
+  else
   case "$1" in
-    -d) mode="dark" ;;
-    -l) mode="light" ;;
-    -i) icase="1" ;;
-    -k) cur=blacks ;;
-    -r) cur=reds ;;
-    -g) cur=greens ;;
-    -y) cur=yellows ;;
-    -b) cur=blues ;;
-    -m) cur=purples ;;
-    -c) cur=cyans ;;
-    -w) cur=whites ;;
+    -[dl]?*)
+      mode_ch="${1:1:1}"
+      rest="${1:2}"
+      if [[ "$mode_ch" == "d" ]]; then mode="dark"; else mode="light"; fi
+      if [[ -n "$rest" ]]; then shift; set -- "-${rest}" "$@"; continue; fi ;;
+    -d) mode="dark"; shift; continue ;;
+    -l) mode="light"; shift; continue ;;
+    -i) icase="1"; shift; continue ;;
+    -k) cur=blacks; shift; continue ;;
+    -r) cur=reds; shift; continue ;;
+    -g) cur=greens; shift; continue ;;
+    -y) cur=yellows; shift; continue ;;
+    -b) cur=blues; shift; continue ;;
+    -m) cur=purples; shift; continue ;;
+    -c) cur=cyans; shift; continue ;;
+    -w) cur=whites; shift; continue ;;
     -[krgybmcw][0-7])
       fg="${1:1:1}" bg="${1:2:1}"
       case "$fg" in
         k) cur_fg=blacks ;; r) cur_fg=reds ;; g) cur_fg=greens ;; y) cur_fg=yellows ;;
         b) cur_fg=blues ;; m) cur_fg=purples ;; c) cur_fg=cyans ;; w) cur_fg=whites ;;
       esac
-      cur="bg${bg}+${cur_fg}" ;;
-    -0) cur=bg0 ;;
-    -1) cur=bg1 ;;
-    -2) cur=bg2 ;;
-    -3) cur=bg3 ;;
-    -4) cur=bg4 ;;
-    -5) cur=bg5 ;;
-    -6) cur=bg6 ;;
-    -7) cur=bg7 ;;
+      cur="bg${bg}+${cur_fg}"; shift; continue ;;
+    -[0-7][krgybmcw])
+      bg="${1:1:1}" fg="${1:2:1}"
+      case "$fg" in
+        k) cur_fg=blacks ;; r) cur_fg=reds ;; g) cur_fg=greens ;; y) cur_fg=yellows ;;
+        b) cur_fg=blues ;; m) cur_fg=purples ;; c) cur_fg=cyans ;; w) cur_fg=whites ;;
+      esac
+      cur="bg${bg}+${cur_fg}"; shift; continue ;;
+    -0) cur=bg0; shift; continue ;;
+    -1) cur=bg1; shift; continue ;;
+    -2) cur=bg2; shift; continue ;;
+    -3) cur=bg3; shift; continue ;;
+    -4) cur=bg4; shift; continue ;;
+    -5) cur=bg5; shift; continue ;;
+    -6) cur=bg6; shift; continue ;;
+    -7) cur=bg7; shift; continue ;;
     -*)
       echo "Usage: [-d|-l] [-k|-r|-g|-y|-b|-m|-c|-w] [-0..-7] [words...]"; exit 1 ;;
     *)
       arg="$(process_arg "$1")"
+      ;;
+  esac
+  fi
       if [[ -n "$cur" ]]; then
         if [[ "$cur" == *+* ]]; then
           bg_part="${cur%%+*}"
@@ -101,8 +119,6 @@ while [[ $# -gt 0 ]]; do
         esac
         ((auto_idx++))
       fi
-      ;;
-  esac
   shift
 done
 
