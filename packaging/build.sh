@@ -1,5 +1,8 @@
 #!/bin/bash
 
+cd "$(dirname "$0")"
+
+cp ../bin/ccolor build
 
 echo
 echo '#'

@@ -8,6 +8,7 @@ ccolor_*.dsc
 ccolor_*.tar.gz
 ccolor_*.buildinfo
 ccolor_*.changes
+packaging/build/*
 packaging/debian/.debhelper/
 packaging/debian/ccolor/
 packaging/debian/*.substvars

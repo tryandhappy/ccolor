@@ -49,8 +49,8 @@ cd "$PACKAGING_DIR"
 dpkg-buildpackage -us -uc -b
 
 mkdir -p "$PACKAGING_DIR/build"
-mv "$PACKAGING_DIR"/../${PKG_NAME}_*.buildinfo "$PACKAGING_DIR/build/" 2>/dev/null
-mv "$PACKAGING_DIR"/../${PKG_NAME}_*.changes "$PACKAGING_DIR/build/" 2>/dev/null
+#mv "$PACKAGING_DIR"/../${PKG_NAME}_*.buildinfo "$PACKAGING_DIR/build/" 2>/dev/null
+#mv "$PACKAGING_DIR"/../${PKG_NAME}_*.changes "$PACKAGING_DIR/build/" 2>/dev/null
 mv "$PACKAGING_DIR"/../${PKG_NAME}_*_all.deb "$PACKAGING_DIR/build/" 2>/dev/null
 cp -f "$PACKAGING_DIR/build/${PKG_NAME}_${VERSION}-"*_all.deb "$PACKAGING_DIR/build/ccolor_all.deb" 2>/dev/null
 
