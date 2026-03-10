@@ -1,3 +1,6 @@
+* 0.3.1-1 2026-03-10 tryandhappy
+- Update the packaging directory layout.
+
 * 0.3.0-1 2026-03-07 tryandhappy
 - Handle arguments with complex patterns.
 - - Changed so that \- can be escaped.

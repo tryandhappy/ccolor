@@ -1,8 +1,8 @@
-packaging/rpmbuild/BUILD
-packaging/rpmbuild/BUILDROOT
-packaging/rpmbuild/RPMS
-packaging/rpmbuild/SOURCES/*
-packaging/rpmbuild/SRPMS
+packaging/rpm/BUILD
+packaging/rpm/BUILDROOT
+packaging/rpm/RPMS
+packaging/rpm/SOURCES/*
+packaging/rpm/SRPMS
 ccolor_*.deb
 ccolor_*.dsc
 ccolor_*.tar.gz
