@@ -1,8 +1,9 @@
-#!/bin/bash
+#!/bin/bash -x
 
 cd "$(dirname "$0")"
 
-cp ../bin/ccolor build
+mkdir -p build
+cp ../bin/ccolor build/ccolor
 
 echo
 echo '#'
@@ -14,7 +15,7 @@ echo
 echo '#'
 echo '# RPM'
 echo '#'
-rpmbuild/rpmbuild.sh
+rpm/rpm.sh
 
 echo
 echo '#'

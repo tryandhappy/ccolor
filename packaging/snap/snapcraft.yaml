@@ -8,7 +8,7 @@ description: |
 
   It highlights patterns that require attention in logs.
   ログの表示等で注意すべき文字をハイライトできます。
-grade: devel # devel/stable
+grade: stable # devel/stable
 confinement: classic # strict/classic/devmode
 platforms:
   amd64:

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 cd "$(dirname "$0")"
 
@@ -25,8 +25,8 @@ rm -rf ../*.changes
 #
 # rpm
 #
-rm -rf rpmbuild/RPMS/*
-rm -rf rpmbuild/SRPMS/*
+rm -rf rpm/RPMS/*
+rm -rf rpm/SRPMS/*
 
 
 
