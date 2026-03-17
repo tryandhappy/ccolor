@@ -18,4 +18,5 @@ packaging/*.rpm
 packaging/*.deb
 packaging/snap/prime/
 packaging/snap/*.snap
+packaging/snap/.craft/packed-files
 

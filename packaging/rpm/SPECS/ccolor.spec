@@ -25,6 +25,9 @@ install -Dm0755 %{SOURCE0} %{buildroot}/usr/bin/ccolor
 /usr/bin/ccolor
 
 %changelog
+* Tue Mar 17 2026 tryandhappy - 0.3.2-1
+- Bump version to 0.3.2 and reorganize packaging layout.
+
 * Tue Mar 10 2026 tryandhappy - 0.3.1-1
 - Update the packaging directory layout.
 

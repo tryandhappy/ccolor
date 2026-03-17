@@ -1,6 +1,6 @@
 name: ccolor
 base: core24
-version: '0.3.1'
+version: '0.3.2'
 summary: Color highlighting in the Bash command line.
 description: |
   Color highlighting in the Bash command line.
@@ -9,14 +9,9 @@ description: |
   It highlights patterns that require attention in logs.
   ログの表示等で注意すべき文字をハイライトできます。
 grade: stable # devel/stable
-confinement: classic # strict/classic/devmode
-#platforms:
-#  - build-on: amd64
-#    run-on: all
-#  amd64:
-#    build-on: [amd64]
-#    build-for: [amd64]
-#  arm64:
-#    build-on: [arm64]
-#    build-for: [arm64]
+confinement: strict # strict/classic/devmode
+platforms:
+  all-platforms:
+    build-on: [amd64]
+    build-for: [all]
 

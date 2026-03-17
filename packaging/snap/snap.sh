@@ -13,5 +13,5 @@ snapcraft --destructive-mode
 #snapcraft remote-build
 
 mv ccolor_*.snap ../build/
-cp -f ../build/ccolor_$(cat ../VERSION)_amd64.snap ../build/ccolor_amd64.snap
+cp -f ../build/ccolor_$(cat ../VERSION)_all-platforms.snap ../build/ccolor_all-platforms.snap
 
